@@ -233,6 +233,22 @@ public class TestManagerImpl implements TestManager {
 					
 					topic = reqTest.getTopic();
 					
+					if ( testConfig.getHistorical_simulation_id() != 0){
+						simulationID = testConfig.getHistorical_simulation_id();
+						ProvenQueryTestManager2 pq = new ProvenQueryTestManager2();
+						TestResultSeries testResults = pq.test_proven("1278337149", expectedResultSeriesPath);
+//						String simulation_time = simOutputObject.getAsJsonObject().get("output").getAsJsonObject().get("message").getAsJsonObject().get("timestamp").getAsString();
+						
+						for (String key : testResults.results.keySet()) {
+							logResults(logMessageObj, simulationID, testResults.results.get(key), testScript.getApplication(), "", key);
+						}
+						
+						// query based on simulation id, times, and maybe MRIDS
+						// load expected results
+						// compare 
+						 // forwardFNCSOutput 
+					}
+					
 					testMode=true;
 					
 					DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
@@ -437,26 +453,16 @@ public class TestManagerImpl implements TestManager {
 				// Temp timeseries index
 				String indexStr = tempIndex + "";
 				tempIndex++;
-				TestResults tr = compareResults.compareExpectedWithSimulationOutput(indexStr,
+				TestResults testResults = compareResults.compareExpectedWithSimulationOutput(indexStr,
 						simOutputObject.getAsJsonObject(), expected_output_series);
-				if (tr != null) {
-					testResultSeries.add(indexStr, tr);
+				if (testResults != null) {
+					testResultSeries.add(indexStr, testResults);
 				}
 				 
 				String test_id = testScript.getApplication();
 				String simulation_time = simOutputObject.getAsJsonObject().get("output").getAsJsonObject().get("message").getAsJsonObject().get("timestamp").getAsString();
-				for (Entry<String, HashMap<String, String[]>> entry : tr.objectPropComparison.entrySet()){
-					HashMap<String, String[]> propMap = entry.getValue();
-					for (Entry<String, String[]> prop: propMap.entrySet()){
-						logManager.getLogDataManager().storeExpectedResults(test_id, ""+simulationID, java.sql.Timestamp.valueOf(simulation_time).getTime() , entry.getKey(), prop.getKey(), prop.getValue()[0], prop.getValue()[1]);
-					}
-				}
 				
-				logMessageObj.setTimestamp(new Date().getTime());
-				logMessageObj.setLogMessage("Index: " + indexStr + " TestManager number of conflicts: "
-						+ " total " + testResultSeries.getTotal());
-				logManager.log(logMessageObj, GridAppsDConstants.username,
-						GridAppsDConstants.topic_platformLog);
+				logResults(logMessageObj, simulationID, testResults, test_id, simulation_time, indexStr);
 			}
 
 			public JsonArray getArraySlice(JsonArray tarray, int start, int end) {
@@ -469,6 +475,21 @@ public class TestManagerImpl implements TestManager {
 			}
 
 		});
+	}
+	
+	public void logResults(LogMessage logMessageObj, int simulationID, TestResults tr, String test_id, String simulation_time, String indexStr) {
+		for (Entry<String, HashMap<String, String[]>> entry : tr.objectPropComparison.entrySet()){
+			HashMap<String, String[]> propMap = entry.getValue();
+			for (Entry<String, String[]> prop: propMap.entrySet()){
+				logManager.getLogDataManager().storeExpectedResults(test_id, ""+simulationID, java.sql.Timestamp.valueOf(simulation_time).getTime() , entry.getKey(), prop.getKey(), prop.getValue()[0], prop.getValue()[1]);
+			}
+		}
+		
+		logMessageObj.setTimestamp(new Date().getTime());
+		logMessageObj.setLogMessage("Index: " + indexStr + " TestManager number of conflicts: "
+				+ " total " + testResultSeries.getTotal());
+		logManager.log(logMessageObj, GridAppsDConstants.username,
+				GridAppsDConstants.topic_platformLog);
 	}
 	
 	public void forwardSimulationInput(Client client, int simulationID) {

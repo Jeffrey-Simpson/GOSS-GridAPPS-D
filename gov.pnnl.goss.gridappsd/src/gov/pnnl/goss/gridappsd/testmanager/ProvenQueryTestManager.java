@@ -23,18 +23,18 @@ import gov.pnnl.proven.message.ProvenMessage;
 import gov.pnnl.proven.message.ProvenStatement;
 import gov.pnnl.proven.message.exception.InvalidProvenMessageException;
 
-import com.hazelcast.nio.ObjectDataInput;
-import com.hazelcast.nio.serialization.IdentifiedDataSerializable;
+//import com.hazelcast.nio.ObjectDataInput;
+//import com.hazelcast.nio.serialization.IdentifiedDataSerializable;
 //import org.topbraid.shacl.rules.RuleUtil;
-import org.apache.jena.rdf.model.Model;
-import org.apache.commons.compress.compressors.snappy.SnappyCompressorInputStream;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
+//import org.apache.jena.rdf.model.Model;
+//import org.apache.commons.compress.compressors.snappy.SnappyCompressorInputStream;
+//import javax.ws.rs.client.ClientBuilder;
+//import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
-import org.glassfish.jersey.client.JerseyClientBuilder;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.internal.RuntimeDelegateImpl;
+//import org.glassfish.jersey.client.JerseyClientBuilder;
+//import org.glassfish.hk2.utilities.binding.AbstractBinder;
+//import org.glassfish.jersey.internal.RuntimeDelegateImpl;
 
 public class ProvenQueryTestManager {
 	String provenUri = "http://localhost:18080/hybrid/rest/v1/repository/provenMessage";
@@ -115,10 +115,10 @@ public class ProvenQueryTestManager {
 		provenProducer.setMessageInfo("GridAPPSD", "QUERY", this.getClass().getSimpleName(), null);
 		
 		ProvenMessage pm;
-		if(messageInfo != null) {			
-			pm = ProvenMessage.message(message).keywords(messageInfo.getKeywords()).domain(messageInfo.getDomain()).name(messageInfo.getName()).source(messageInfo.getSource()).build();
-		}
-		else
+//		if(messageInfo != null) {			
+//			pm = ProvenMessage.message(message).keywords(messageInfo.getKeywords()).domain(messageInfo.getDomain()).name(messageInfo.getName()).source(messageInfo.getSource()).build();
+//		}
+//		else
 			pm = ProvenMessage.message(message).build();
 
 		 ProvenResponse pr = provenProducer.sendMessage(pm, exchangeInfo, requestId);
@@ -154,8 +154,8 @@ public class ProvenQueryTestManager {
 		try {
 			ProvenMessage pm = ProvenMessage.message(message).build();
 			pm.getMeasurements();
-			Entity<ProvenMessage> em = Entity.entity(pm, MediaType.APPLICATION_JSON);
-			System.out.println(em.toString());
+//			Entity<ProvenMessage> em = Entity.entity(pm, MediaType.APPLICATION_JSON);
+//			System.out.println(em.toString());
 		} catch (InvalidProvenMessageException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
