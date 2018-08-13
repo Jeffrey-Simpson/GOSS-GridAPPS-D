@@ -234,9 +234,10 @@ public class TestManagerImpl implements TestManager {
 					topic = reqTest.getTopic();
 					
 					if ( testConfig.getHistorical_simulation_id() != 0){
+						System.out.println("Historical run test");
 						simulationID = testConfig.getHistorical_simulation_id();
-						ProvenQueryTestManager2 pq = new ProvenQueryTestManager2();
-						TestResultSeries testResults = pq.test_proven("1278337149", expectedResultSeriesPath);
+						HistoricalComparison hc = new HistoricalComparison();
+						TestResultSeries testResults = hc.test_proven("1278337149", expectedResultSeriesPath);
 //						String simulation_time = simOutputObject.getAsJsonObject().get("output").getAsJsonObject().get("message").getAsJsonObject().get("timestamp").getAsString();
 						
 						for (String key : testResults.results.keySet()) {
