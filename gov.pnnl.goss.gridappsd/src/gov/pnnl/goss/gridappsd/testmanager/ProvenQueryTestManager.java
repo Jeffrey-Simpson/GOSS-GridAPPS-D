@@ -30,7 +30,7 @@ import gov.pnnl.proven.message.exception.InvalidProvenMessageException;
 //import org.apache.commons.compress.compressors.snappy.SnappyCompressorInputStream;
 //import javax.ws.rs.client.ClientBuilder;
 //import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
+//import javax.ws.rs.core.MediaType;
 
 //import org.glassfish.jersey.client.JerseyClientBuilder;
 //import org.glassfish.hk2.utilities.binding.AbstractBinder;
@@ -107,41 +107,41 @@ public class ProvenQueryTestManager {
 		
 	}
 	
-	public ProvenResponse sendMessage(String message, String requestId) throws InvalidProvenMessageException, SendMessageException, NullExchangeInfoException {
-		MessageInfo messageInfo = new MessageInfo("GridAPPSD", "SimulationOutput", this.getClass().getSimpleName(), null);
-		ExchangeInfo exchangeInfo = new ExchangeInfo(ExchangeType.REST, provenUri, null, null);
-		ProvenProducer provenProducer = new ProvenProducer();
-		provenProducer.restProducer(provenUri, null, null);
-		provenProducer.setMessageInfo("GridAPPSD", "QUERY", this.getClass().getSimpleName(), null);
-		
-		ProvenMessage pm;
+//	public ProvenResponse sendMessage(String message, String requestId) throws InvalidProvenMessageException, SendMessageException, NullExchangeInfoException {
+//		MessageInfo messageInfo = new MessageInfo("GridAPPSD", "SimulationOutput", this.getClass().getSimpleName(), null);
+//		ExchangeInfo exchangeInfo = new ExchangeInfo(ExchangeType.REST, provenUri, null, null);
+//		ProvenProducer provenProducer = new ProvenProducer();
+//		provenProducer.restProducer(provenUri, null, null);
+//		provenProducer.setMessageInfo("GridAPPSD", "QUERY", this.getClass().getSimpleName(), null);
+//		
+//		ProvenMessage pm;
 //		if(messageInfo != null) {			
 //			pm = ProvenMessage.message(message).keywords(messageInfo.getKeywords()).domain(messageInfo.getDomain()).name(messageInfo.getName()).source(messageInfo.getSource()).build();
 //		}
 //		else
-			pm = ProvenMessage.message(message).build();
-
-		 ProvenResponse pr = provenProducer.sendMessage(pm, exchangeInfo, requestId);
-		 
-		 System.out.println(pr.toString());
-		 System.out.println(pm.getStatements().size());
-		 
-		 for (ProvenStatement meas : pm.getStatements() ) {
-			 System.out.println(meas.toString());
-			 System.out.println(meas.getSubject());
-//			 ObjectDataInput in = null;
-//			 try {
-//				meas.readData(in);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-		}
-		 for (ProvenMeasurement meas : pm.getMeasurements()) {
-			 System.out.println(meas.toString());
-		}
-		 return pr;
-	}
+//			pm = ProvenMessage.message(message).build();
+//
+//		 ProvenResponse pr = provenProducer.sendMessage(pm, exchangeInfo, requestId);
+//		 
+//		 System.out.println(pr.toString());
+//		 System.out.println(pm.getStatements().size());
+//		 
+//		 for (ProvenStatement meas : pm.getStatements() ) {
+//			 System.out.println(meas.toString());
+//			 System.out.println(meas.getSubject());
+////			 ObjectDataInput in = null;
+////			 try {
+////				meas.readData(in);
+////			} catch (IOException e) {
+////				// TODO Auto-generated catch block
+////				e.printStackTrace();
+////			}
+//		}
+//		 for (ProvenMeasurement meas : pm.getMeasurements()) {
+//			 System.out.println(meas.toString());
+//		}
+//		 return pr;
+//	}
 
 
 	private void mySend(String provenUri) {
@@ -151,15 +151,15 @@ public class ProvenQueryTestManager {
 	
 		ExchangeInfo exchangeInfo = new ExchangeInfo(ExchangeType.REST, provenUri, null, null);
 		
-		try {
-			ProvenMessage pm = ProvenMessage.message(message).build();
-			pm.getMeasurements();
-//			Entity<ProvenMessage> em = Entity.entity(pm, MediaType.APPLICATION_JSON);
-//			System.out.println(em.toString());
-		} catch (InvalidProvenMessageException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+//		try {
+//			ProvenMessage pm = ProvenMessage.message(message).build();
+//			pm.getMeasurements();
+////			Entity<ProvenMessage> em = Entity.entity(pm, MediaType.APPLICATION_JSON);
+////			System.out.println(em.toString());
+//		} catch (InvalidProvenMessageException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
 
 	
 //		return sendMessage(pm, exchangeInfo, null);
