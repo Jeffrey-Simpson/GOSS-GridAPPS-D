@@ -314,21 +314,25 @@ public class CompareResults {
 		TestResults testResults = new TestResults();
 		JsonObject output = jsonObject;
 		String firstKey = getFirstKey(output);
-
-		JsonObject simOutput = null;
-
-//		if (output.get(firstKey).isJsonObject()){
-		if ( ! firstKey.equals("output") ){
-			simOutput = output.get(firstKey).getAsJsonObject();
-		} else { 
-			// CIM: new sim output 
-			simOutput = output.get(firstKey).getAsJsonObject();
-			Map<String, JsonElement> simOutputMap= getMeasurmentsMap(simOutput);
-			compareExpectedAndSim(expectedOutputMap, testResults, simOutputMap);
-			return testResults;
-		}	
-		compareExpectedWithSimulation(expectedOutputMap, testResults, simOutput);
+		
+		Map<String, JsonElement> simOutputMap= getMeasurmentsMap(jsonObject);
+		compareExpectedAndSim(expectedOutputMap, testResults, simOutputMap);
 		return testResults;
+
+//		JsonObject simOutput = null;
+//
+////		if (output.get(firstKey).isJsonObject()){
+//		if ( ! firstKey.equals("output") ){
+//			simOutput = output.get(firstKey).getAsJsonObject();
+//		} else { 
+//			// CIM: new sim output 
+//			simOutput = output.get(firstKey).getAsJsonObject();
+//			Map<String, JsonElement> simOutputMap= getMeasurmentsMap(simOutput);
+//			compareExpectedAndSim(expectedOutputMap, testResults, simOutputMap);
+//			return testResults;
+//		}	
+//		compareExpectedWithSimulation(expectedOutputMap, testResults, simOutput);
+//		return testResults;
 	}
 	
 	public void compareExpectedWithSimulation(Map<String, JsonElement> expectedOutputMap, 
@@ -595,6 +599,7 @@ public class CompareResults {
 			return comparison;
 		}
 		JsonPrimitive obj1 = simOutputObj.get(prop).getAsJsonPrimitive();
+//		System.out.println(prop);
 		JsonPrimitive obj2 = expectedOutputObj.get(prop).getAsJsonPrimitive();
 		if (obj1.isNumber() && obj2.isNumber()){
 			float f1 = simOutputObj.get(prop).getAsFloat();

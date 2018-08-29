@@ -117,8 +117,10 @@ public class ProvenTimeSeriesDataManagerImpl implements TimeseriesDataManager, D
 	
 	@Override
 	public String query(RequestTimeseriesData requestTimeseriesData) throws Exception {
-		
+//		System.out.println(provenUri);
+//		provenUri= "http://localhost:18080/hybrid/rest/v1/repository/provenMessage";
 		provenProducer.restProducer(provenUri, null, null);
+
 		provenProducer.setMessageInfo("GridAPPSD", "QUERY", this.getClass().getSimpleName(), keywords);
 		
 		
@@ -129,37 +131,31 @@ public class ProvenTimeSeriesDataManagerImpl implements TimeseriesDataManager, D
 		if(requestTimeseriesData.getMrid()!=null)
 			queryFilter.hasMrid = requestTimeseriesData.getMrid();
 		if(requestTimeseriesData.getStartTime()!=null)
-			queryFilter.hasMrid = requestTimeseriesData.getStartTime();
+			queryFilter.startTime = requestTimeseriesData.getStartTime();
 		if(requestTimeseriesData.getEndTime()!=null)
-			queryFilter.hasMrid = requestTimeseriesData.getEndTime();
+			queryFilter.endTime = requestTimeseriesData.getEndTime();
 		ProvenQuery provenQuery = new ProvenQuery();
 		provenQuery.queryFilter = queryFilter;
 		
 		ProvenResponse response = provenProducer.sendMessage(provenQuery.toString(), requestId);
-		return response.toString();
+		System.out.println(response.toString());
+		return response.data.toString();
 		
 	}
 	
 	@Override
 	public void storeSimulationOutput(Serializable message) throws Exception {
-		
 		provenProducer.restProducer(provenUri, null, null);
 		provenProducer.setMessageInfo("GridAPPSD", "SimulationOutput", this.getClass().getSimpleName(), keywords);
 		provenProducer.sendMessage(message.toString(), requestId);
 	}
-	
-	
-	
-	@Override
-	public void storeSimulationInput(Serializable message) throws Exception {
 		
+	@Override
+	public void storeSimulationInput(Serializable message) throws Exception {	
 		provenProducer.restProducer(provenUri, null, null);
 		provenProducer.setMessageInfo("GridAPPSD", "SimulationInput", this.getClass().getSimpleName(), keywords);
 		provenProducer.sendMessage(message.toString(), requestId);
 	}
-
-
-
 
 }
 
@@ -180,7 +176,7 @@ class ProvenQuery implements Serializable{
 
 class QueryFilter implements Serializable{
 	 	String hasSimulationId;
-	    String hasSimulationMessageType;
+	    String hasSimulationMessageType="OUTPUT";
 	    String hasMrid;
 	    String startTime;
 	    String endTime;

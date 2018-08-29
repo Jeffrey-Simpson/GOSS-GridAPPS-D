@@ -417,13 +417,22 @@ public class TestManagerImpl implements TestManager {
 				JsonObject jsonObject = CompareResults.getSimulationJson(message.toString());
 				jsonObject = CompareResults.getSimulationJson(jsonObject.get("data").getAsString());
 
-				if (jsonObject.get("output") == null || jsonObject.get("output").isJsonNull()) {
-					logMessageObj.setTimestamp(new Date().getTime());
-					if (jsonObject.get("output") == null)
-						logMessageObj.setLogMessage("TestManager output is null.");
-					else
-						logMessageObj.setLogMessage("TestManager output is Json null" + jsonObject.get("output").toString());
-					
+//				if (jsonObject.get("output") == null || jsonObject.get("output").isJsonNull()) {
+//					logMessageObj.setTimestamp(new Date().getTime());
+//					if (jsonObject.get("output") == null)
+//						logMessageObj.setLogMessage("TestManager output is null.");
+//					else
+//						logMessageObj.setLogMessage("TestManager output is Json null" + jsonObject.get("output").toString());
+//					
+//					logManager.log(logMessageObj, GridAppsDConstants.username,
+//							GridAppsDConstants.topic_platformLog);
+//					return;
+//				}
+
+				if ( ! jsonObject.has("message")) {
+					logMessageObj.setLogMessage("TestManager output is empty");
+//					 + jsonObject.get("data").toString());
+				
 					logManager.log(logMessageObj, GridAppsDConstants.username,
 							GridAppsDConstants.topic_platformLog);
 					return;
@@ -431,8 +440,9 @@ public class TestManagerImpl implements TestManager {
 				
 				// Break up measurements to send to rules app
 				JsonObject temp = CompareResults.getSimulationJson(message.toString());
-				temp = CompareResults.getSimulationJson(temp.get("data").getAsString());
-				JsonObject forwardObject = temp.get("output").getAsJsonObject();
+//				temp = CompareResults.getSimulationJson(temp.get("data").getAsString());
+//				JsonObject forwardObject = temp.get("output").getAsJsonObject();
+				JsonObject forwardObject = CompareResults.getSimulationJson(temp.get("data").getAsString());
 
                 int meas_len = forwardObject.get("message").getAsJsonObject().get("measurements").getAsJsonArray().size();
                 JsonArray tarray = forwardObject.get("message").getAsJsonObject().get("measurements").getAsJsonArray();
@@ -466,7 +476,7 @@ public class TestManagerImpl implements TestManager {
 				}
 				 
 				String test_id = testScript.getApplication();
-				String simulation_time = simOutputObject.getAsJsonObject().get("output").getAsJsonObject().get("message").getAsJsonObject().get("timestamp").getAsString();
+				String simulation_time = simOutputObject.getAsJsonObject().get("message").getAsJsonObject().get("timestamp").getAsString();
 				
 				logResults(logMessageObj, simulationID, testResults, test_id, simulation_time, indexStr);
 			}
@@ -487,7 +497,8 @@ public class TestManagerImpl implements TestManager {
 		for (Entry<String, HashMap<String, String[]>> entry : tr.objectPropComparison.entrySet()){
 			HashMap<String, String[]> propMap = entry.getValue();
 			for (Entry<String, String[]> prop: propMap.entrySet()){
-				logManager.getLogDataManager().storeExpectedResults(test_id, ""+simulationID, java.sql.Timestamp.valueOf(simulation_time).getTime() , entry.getKey(), prop.getKey(), prop.getValue()[0], prop.getValue()[1]);
+//				logManager.getLogDataManager().storeExpectedResults(test_id, ""+simulationID, java.sql.Timestamp.valueOf(simulation_time).getTime() , entry.getKey(), prop.getKey(), prop.getValue()[0], prop.getValue()[1]);
+				logManager.getLogDataManager().storeExpectedResults(test_id, ""+simulationID,  Long.parseLong(simulation_time), entry.getKey(), prop.getKey(), prop.getValue()[0], prop.getValue()[1]);
 			}
 		}
 		

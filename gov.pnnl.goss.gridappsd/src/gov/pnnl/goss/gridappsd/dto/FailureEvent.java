@@ -64,15 +64,22 @@ public class FailureEvent implements Serializable{
 	
 	public String equipmentMRID;
 	
-	public String phases;
+	public String phases; // Maybe list? ABC or ABCN
 	
-	public String rGround; //Complex
+//	Fault.kind (lineToGround, lineToLine, lineToLineToGround, lineOpenPNNL)
+	public String kind; 
 	
-	public String xGround; //Complex
+	public float rGround; //Float
 	
-	public String rLineToLine; //Complex
+	public float xGround; //Float
 	
-	public String xLineToLine; //Complex
+	public float rLineToLine; //Float
+	
+	public float xLineToLine; //Float
+	
+	public Date timeInitiated;
+	
+	public Date timeCleared;
 
 	public Date event_date;
 	
