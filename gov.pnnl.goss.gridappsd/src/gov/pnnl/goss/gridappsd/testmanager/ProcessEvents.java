@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -297,7 +298,8 @@ public class ProcessEvents {
 		
 		JsonElement jobject = new JsonParser().parse(fault1.toString());
 		ArrayList<Difference> diffs = new ArrayList<Difference>();
-		for (String ObjectMRID : fault1.ObjectMRID) {
+		HashSet<String> setOfMRIDs = new HashSet<String>(fault1.ObjectMRID);
+		for (String ObjectMRID : setOfMRIDs) {
 			JsonObject value = new JsonObject();
 
 			value.addProperty("ObjectMRID", ObjectMRID);
@@ -310,7 +312,7 @@ public class ProcessEvents {
 			diff.object = fault1.faultMRID;
 			diff.attribute = "IdentifiedObject.Fault";
 			diff.value = value;
-			System.out.println(diff.toString());
+			// System.out.println(diff.toString());
 			diffs.add(diff);
 		}
 		return diffs;
